@@ -1,0 +1,10 @@
+const express = require("express")
+const router = express.Router()
+const {registerAdmin,authenticateAdmin, getAdminDashboard} = require("../controllers/admin.controller")
+const { setQuestion, sendQuestion } = require("../controllers/question.controller")
+router.get("/dashboard",getAdminDashboard)
+router.post("/signup",registerAdmin)
+router.post("/signin",authenticateAdmin)
+router.post("/question",setQuestion)
+router.post("/getquestion",sendQuestion)
+module.exports = router;
