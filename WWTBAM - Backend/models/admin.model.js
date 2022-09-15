@@ -4,7 +4,8 @@ const adminSchema = mongoose.Schema({
     firstname: {type:String,required:true},
     lastname:{type:String,required:true},
     email:{type:String,required:true,unique:true},
-    password:{type:String,required:true}
+    password:{type:String,required:true},
+    image:{type:String}
 })
 let saltRound = 10
 adminSchema.pre("save",function(next){
@@ -27,5 +28,4 @@ adminSchema.methods.validatePassword = function(password,callback){
     })
 }
 const adminModel = mongoose.model("admin_collection",adminSchema)
-// const adminModel = mongoose.model("admin_collection",adminSchema)
 module.exports = adminModel;

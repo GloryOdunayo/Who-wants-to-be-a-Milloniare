@@ -1,4 +1,10 @@
 const adminModel = require("../models/admin.model");
+let cloudinary = require('cloudinary')
+cloudinary.config({ 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.API_KEY, 
+    api_secret: process.env.API_SECRET 
+});
 const jwt = require("jsonwebtoken");
 const registerAdmin = (req,res)=>{
     // console.log(req.body)
@@ -54,4 +60,41 @@ const getAdminDashboard = (req,res)=>{
         }
     })
 }
-module.exports = {registerAdmin,authenticateAdmin, getAdminDashboard }
+
+const adminDashboard=(req,res)=>{
+    let email = req.body.currentUser
+    adminModel.findOne({email:email},(err, result)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send({message:"done successfully",status:true,result})
+            console.log(result)
+        }
+     //     res.send(result)
+    })
+     
+}
+
+const adminUploadFile=(req,res)=>{
+    console.log(req.body); 
+    let file= req.body.file  
+    let {token} = req.body
+    cloudinary.v2.uploader.upload(file, (err, result) =>{
+    if(err){
+        console.log(err); 
+    } else{
+        console.log(result.secure_url)
+        let img =result.secure_url
+        adminModel.findOne({token:token},(err,result)=>{
+            let myImg = result.image = img
+            console.log(result)
+            let form = new adminModel(result)
+            form.save()
+            res.send({form,message: 'Image uploaded successfully', status:true,image:result.secure_url})
+        })
+    };
+    
+  })
+}
+module.exports = {registerAdmin,authenticateAdmin, getAdminDashboard, adminDashboard,adminUploadFile }

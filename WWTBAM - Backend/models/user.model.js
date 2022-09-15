@@ -4,7 +4,8 @@ const userSchema = mongoose.Schema({
     firstname: {type:String,required:true},
     lastname:{type:String,required:true},
     email:{type:String,required:true,unique:true},
-    password:{type:String,required:true}
+    password:{type:String,required:true},
+    image:{type:String}
 })
 let saltRound = 10
 userSchema.pre("save",function(next){
@@ -27,5 +28,4 @@ userSchema.methods.validatePassword = function(password,callback){
     })
 }
 const userModel = mongoose.model("user_collection",userSchema)
-// const userModel = mongoose.model("user_collection",userSchema)
 module.exports = userModel;

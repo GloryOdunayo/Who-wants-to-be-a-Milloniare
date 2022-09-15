@@ -1,4 +1,11 @@
 const userModel = require("../models/user.model");
+const questionModal = require("../models/question.model")
+let cloudinary = require('cloudinary')
+cloudinary.config({ 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.API_KEY, 
+    api_secret: process.env.API_SECRET 
+});
 const jwt = require("jsonwebtoken");
 const registerUser = (req,res)=>{
     // console.log(req.body)
@@ -54,4 +61,46 @@ const getDashboard = (req,res)=>{
         }
     })
 }
-module.exports = {registerUser,authenticateUser, getDashboard }
+
+const dashboard=(req,res)=>{
+    let email = req.body.currentUser
+    userModel.findOne({email:email},(err, result)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send({message:"done successfully",status:true,result})
+            console.log(result)
+        }
+     //     res.send(result)
+    })
+     
+}
+
+const uploadFile=(req,res)=>{
+    console.log(req.body); 
+    let file= req.body.file  
+    cloudinary.v2.uploader.upload(file, (err, result) =>{
+    if(err){
+        console.log(err);
+    } else{
+        console.log(result.secure_url)
+        let img =result.secure_url
+        userModel.findOne({token:token},(err,result)=>{
+            let myImg = result.image = img
+            console.log(result)
+            let form = new userModel(result)
+            form.save()
+            res.send({form,message: 'Image uploaded successfully', status:true,image:result.secure_url})
+        })
+    };
+    
+  })
+}
+
+const getTest=(res,req)=>{
+    questionModal.find((err,result)=>{
+        conole.log(result)
+    })
+}
+module.exports = {registerUser,authenticateUser, getDashboard,getTest,dashboard,uploadFile }
