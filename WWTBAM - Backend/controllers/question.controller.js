@@ -14,7 +14,7 @@ const setQuestion=(req,res)=>{
             res.send({message:"Failed to add question" ,status:false})
             // console.log(err);
          }else{
-            res.send({message:"add successful",status:true,result})
+            res.send({message:"Question add successful",status:true,result})
             // console.log(result);
          }   
         })
@@ -25,15 +25,15 @@ const setQuestion=(req,res)=>{
 const sendQuestion =async (req,res) =>{
     let {email,token}=req.body
     adminModel.findOne({token:token},(err,result)=>{
-   if (err) {
-    res.send({message:"con't find the this user" ,status:false})
-   }else{   
-    questionModel.find({email:email},(err,result)=>{
-        if(err) throw err
-        console.log(result);
-        res.send({massage:"Here is your questions",result,status:true})
-       })
-   }
+        if (err) {
+            res.send({message:"can't find the this user" ,status:false})
+        }else{   
+            questionModel.find({email:email},(err,result)=>{
+                if(err) throw err
+                console.log(result);
+                res.send({massage:"Here is your questions",result,status:true})
+            })
+        }
     })
    
 }

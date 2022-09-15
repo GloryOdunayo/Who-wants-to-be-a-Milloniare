@@ -86,7 +86,7 @@ const uploadFile=(req,res)=>{
     } else{
         console.log(result.secure_url)
         let img =result.secure_url
-        userModel.findOne({token:token},(err,result)=>{
+        userModel.findOne({email:req.body.currentUser},(err,result)=>{
             let myImg = result.image = img
             console.log(result)
             let form = new userModel(result)
@@ -100,7 +100,11 @@ const uploadFile=(req,res)=>{
 
 const getTest=(res,req)=>{
     questionModal.find((err,result)=>{
-        conole.log(result)
+        if(err){
+            console.log(err);
+        } else {
+            conole.log(result)
+        }
     })
 }
 module.exports = {registerUser,authenticateUser, getDashboard,getTest,dashboard,uploadFile }

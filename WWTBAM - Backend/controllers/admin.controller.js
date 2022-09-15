@@ -77,16 +77,15 @@ const adminDashboard=(req,res)=>{
 }
 
 const adminUploadFile=(req,res)=>{
-    console.log(req.body); 
+    console.log(req.body.currentUser); 
     let file= req.body.file  
-    let {token} = req.body
     cloudinary.v2.uploader.upload(file, (err, result) =>{
     if(err){
         console.log(err); 
     } else{
         console.log(result.secure_url)
         let img =result.secure_url
-        adminModel.findOne({token:token},(err,result)=>{
+        adminModel.findOne({email:req.body.currentUser},(err,result)=>{
             let myImg = result.image = img
             console.log(result)
             let form = new adminModel(result)
