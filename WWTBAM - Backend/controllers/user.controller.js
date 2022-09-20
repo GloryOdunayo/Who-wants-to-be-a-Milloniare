@@ -8,7 +8,7 @@ cloudinary.config({
 });
 const jwt = require("jsonwebtoken");
 const registerUser = (req,res)=>{
-    // console.log(req.body)
+    console.log(req.body)
     let {password} = req.body
     let form = new userModel(req.body)
     form.save((err)=>{
