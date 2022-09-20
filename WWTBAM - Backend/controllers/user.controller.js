@@ -22,8 +22,8 @@ const registerUser = (req,res)=>{
 }
 
 const authenticateUser = (req,res)=>{
-    console.log(req.body)
     let {password,email} = req.body
+    console.log(req.body)
     userModel.findOne({email:req.body.email},(err,user)=>{
         if(err){
             res.send({message:"Internal Server Error",status:false})
@@ -84,27 +84,22 @@ const uploadFile=(req,res)=>{
     if(err){
         console.log(err);
     } else{
-        console.log(result.secure_url)
-        let img =result.secure_url
-        userModel.findOne({email:req.body.currentUser},(err,result)=>{
-            let myImg = result.image = img
-            console.log(result)
-            let form = new userModel(result)
-            form.save()
-            res.send({form,message: 'Image uploaded successfully', status:true,image:result.secure_url})
+        console.log(result.url)
+        let img =result.url
+        userModel.findOneAndUpdate({email:req.body.currentUser},{image:img},(err,result)=>{
+            if (err){
+                console.log(err);
+                res.send({message: "upload failed", status:false})
+            }else{
+                console.log(result);
+                res.send({message:"Image uploaded successfully", status:true})
+            }
+            
         })
     };
     
   })
 }
 
-const getTest=(res,req)=>{
-    questionModal.find((err,result)=>{
-        if(err){
-            console.log(err);
-        } else {
-            conole.log(result)
-        }
-    })
-}
-module.exports = {registerUser,authenticateUser, getDashboard,getTest,dashboard,uploadFile }
+
+module.exports = {registerUser,authenticateUser, getDashboard,dashboard,uploadFile }

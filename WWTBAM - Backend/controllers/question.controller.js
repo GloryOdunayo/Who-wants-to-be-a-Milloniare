@@ -37,4 +37,21 @@ const sendQuestion =async (req,res) =>{
     })
    
 }
-module.exports ={setQuestion,sendQuestion}
+
+const getTest=(req,res)=>{
+    questionModel.find((err,result)=>{
+        if(err){
+            console.log(err);
+        } else {
+            if(!result){
+                res.send({message:"Question not available",status:false})
+            } else{
+                let round = result[Math.floor(Math.random()* result.length)]
+                res.send({message:"Question Available", status:true,result})
+                console.log(result)
+            }
+        }
+    })
+}
+
+module.exports ={setQuestion,sendQuestion, getTest}

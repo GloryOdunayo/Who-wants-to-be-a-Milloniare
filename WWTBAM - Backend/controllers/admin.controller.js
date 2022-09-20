@@ -78,21 +78,25 @@ const adminDashboard=(req,res)=>{
 
 const adminUploadFile=(req,res)=>{
     console.log(req.body.currentUser); 
-    let file= req.body.file  
+    let file= req.body.file 
+    // let {email} = req.body.currentUser 
     cloudinary.v2.uploader.upload(file, (err, result) =>{
-    if(err){
-        console.log(err); 
-    } else{
-        console.log(result.secure_url)
-        let img =result.secure_url
-        adminModel.findOne({email:req.body.currentUser},(err,result)=>{
-            let myImg = result.image = img
-            console.log(result)
-            let form = new adminModel(result)
-            form.save()
-            res.send({form,message: 'Image uploaded successfully', status:true,image:result.secure_url})
-        })
-    };
+        if(err){
+            console.log(err); 
+        } else{
+            console.log(result.url)
+            let img = result.url
+            adminModel.findOneAndUpdate({email:req.body.currentUser},{image:img},(err,result)=>{
+                if (err){
+                    console.log(err);
+                    res.send({message: "upload failed", status:false})
+                }else{
+                    console.log(result);
+                    res.send({message:"Image uploaded successfully", status:true})
+                }
+                
+            })
+        };
     
   })
 }
