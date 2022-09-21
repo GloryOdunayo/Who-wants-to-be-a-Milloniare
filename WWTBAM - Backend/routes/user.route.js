@@ -8,4 +8,5 @@ router.post("/signup",registerUser)
 router.post("/signin",authenticateUser)
 router.post("/dashboard", dashboard)
 router.post("/upload",uploadFile)
+// router.post("/score", postScore)
 module.exports = router;

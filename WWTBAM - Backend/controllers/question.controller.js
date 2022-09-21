@@ -46,12 +46,16 @@ const getTest=(req,res)=>{
             if(!result){
                 res.send({message:"Question not available",status:false})
             } else{
-                let round = result[Math.floor(Math.random()* result.length)]
-                res.send({message:"Question Available", status:true,result})
+                // let round = result[Math.floor(Math.random()* result.length)]
+                res.send({message:"Question Available", status:true, result})
                 console.log(result)
             }
         }
     })
 }
+
+// const postScore=(req,res)=>{
+//     console.log("No req");
+// }
 
 module.exports ={setQuestion,sendQuestion, getTest}
