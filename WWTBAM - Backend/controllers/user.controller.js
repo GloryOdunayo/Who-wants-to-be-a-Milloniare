@@ -7,6 +7,7 @@ cloudinary.config({
     api_secret: process.env.API_SECRET 
 });
 const jwt = require("jsonwebtoken");
+const scoreModel = require("../models/score.model");
 const registerUser = (req,res)=>{
     console.log(req.body)
     let {password} = req.body
@@ -23,26 +24,53 @@ const registerUser = (req,res)=>{
 
 const authenticateUser = (req,res)=>{
     let {password,email} = req.body
-    console.log(req.body)
+    console.log(email)
     userModel.findOne({email:req.body.email},(err,user)=>{
         if(err){
-            res.send({message:"Internal Server Error",status:false})
+            res.send({message:"Internal Server Error, please try again later",status:false})
         }else{
             if(!user){
-                res.send({message:"Invalid credentials",status:false})
+                res.send({message:"Invalid credentials, please signup",status:false})
             }else{
                 user.validatePassword(password,(err,same)=>{
                     // console.log(same)
                     if(!same){
-                        res.send({message:"Password is incorrect",status:false})
+                        res.send({message:"Incorrect Password",status:false})
                     }else{
                         let secret = process.env.SECRET
                         let myToken = jwt.sign({email},secret,{expiresIn:"1h"})
                         console.log(myToken)
-                        res.send({message:"User sign in successfully",status:true,myToken})
+                        res.send({message:"User signin successfully",status:true,myToken})
                     }
                 })
             }
+        }
+    })
+}
+
+const savescore = (req,res)=>{
+    console.log(req.body);
+    scoreModel.findOne({token:req.body.token},(err,result)=>{})
+    let form = new scoreModel(req.body)
+    form.save((err)=>{
+        if(err){
+            console.log(err);
+            res.send({message:"Unable to save", status:false})
+        }else{
+            console.log("Successful");
+            res.send({message:"Score saved successfully", status:true, details:form})
+        }
+    })
+}
+
+const getscore = (req,res)=>{
+    console.log(req.body);
+    let {token} = req.body
+    scoreModel.find({token:token},(err,result)=>{
+        if(err){
+            res.send({message:"Couldn't save", err})
+        } else{
+            res.send({message:"Display score", result})
         }
     })
 }
@@ -102,4 +130,4 @@ const uploadFile=(req,res)=>{
 }
 
 
-module.exports = {registerUser,authenticateUser, getDashboard,dashboard,uploadFile }
+module.exports = {registerUser,authenticateUser, getDashboard,dashboard,uploadFile,savescore,getscore }
