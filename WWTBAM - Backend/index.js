@@ -10,9 +10,9 @@ const corsOptions = {
     allowedHeaders: 'Content-Type, Authorization', // Specify the allowed headers
 };
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.urlencoded({extended:true,limit:"20mb"}))
-app.use(express.json({limit:"20mb"}))
+app.use(express.json())
 require("dotenv").config()
 const URI = process.env.MONGO_URI
 mongoose.connect(URI,(err)=>{
