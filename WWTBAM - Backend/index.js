@@ -2,7 +2,14 @@ const express = require("express")
 const app = express()
 const cors = require("cors")
 const mongoose = require("mongoose")
-app.use(cors())
+
+const corsOptions = {
+    origin: 'https://your-client-app-domain.com', // Replace with your client app's domain
+    methods: 'GET, POST, PUT, DELETE', // Specify the allowed HTTP methods
+    allowedHeaders: 'Content-Type, Authorization', // Specify the allowed headers
+};
+
+app.use(cors(corsOptions))
 app.use(express.urlencoded({extended:true,limit:"20mb"}))
 app.use(express.json({limit:"20mb"}))
 require("dotenv").config()
