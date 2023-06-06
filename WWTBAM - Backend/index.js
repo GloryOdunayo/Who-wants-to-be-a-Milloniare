@@ -4,7 +4,8 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 
 const corsOptions = {
-    origin: 'https://famous-torte-02c20f.netlify.app', // Replace with your client app's domain
+    origin: 'https://wwtbam-frontend-43zu2zovu-okewoleglory-gmailcom.vercel.app/', // Replace with your client app's domain
+    // 'https://famous-torte-02c20f.netlify.app',
     methods: 'GET, POST, PUT, DELETE', // Specify the allowed HTTP methods
     allowedHeaders: 'Content-Type, Authorization', // Specify the allowed headers
 };
