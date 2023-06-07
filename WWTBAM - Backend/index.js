@@ -23,10 +23,10 @@ const userRouter = require("./routes/user.route")
 const adminRouter = require("./routes/admin.route")
 app.use("/user",userRouter);
 app.use("/admin",adminRouter);
-app.use(express.static("build"))
-app.get("/*",(req,res)=>{
-    res.sendFile(__dirname+"/build/index.html")
-})
+// app.use(express.static("build"))
+// app.get("/*",(req,res)=>{
+//     res.sendFile(__dirname+"/build/index.html")
+// })
 app.listen(PORT,()=>{
     console.log("App is listening at Port :" + PORT)
 })

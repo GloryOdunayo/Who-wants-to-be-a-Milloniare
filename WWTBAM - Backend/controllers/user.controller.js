@@ -109,24 +109,23 @@ const uploadFile=(req,res)=>{
     console.log(req.body); 
     let file= req.body.file  
     cloudinary.v2.uploader.upload(file, (err, result) =>{
-    if(err){
-        console.log(err);
-    } else{
-        console.log(result.url)
-        let img =result.url
-        userModel.findOneAndUpdate({email:req.body.currentUser},{image:img},(err,result)=>{
-            if (err){
-                console.log(err);
-                res.send({message: "upload failed", status:false})
-            }else{
-                console.log(result);
-                res.send({message:"Image uploaded successfully", status:true})
-            }
-            
-        })
-    };
-    
-  })
+        if(err){
+            console.log(err);
+        } else{
+            console.log(result.url)
+            let img =result.url
+            userModel.findOneAndUpdate({email:req.body.currentUser},{image:img},(err,result)=>{
+                if (err){
+                    console.log(err);
+                    res.send({message: "upload failed", status:false})
+                }else{
+                    console.log(result);
+                    res.send({message:"Image uploaded successfully", status:true})
+                }
+                
+            })
+        };    
+    })
 }
 
 
